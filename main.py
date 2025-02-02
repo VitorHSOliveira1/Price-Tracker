@@ -14,12 +14,11 @@ def func_input(input):
     input.send_keys(elemento_pesquisado) 
     input.send_keys(Keys.ENTER)
 
-def centro_de_tratamento(nome,preco):
+def centro_de_tratamento(nome, preco):
+    preco = preco.text.strip()
+    preco_convertido = int(float(preco.replace("R$", "").strip().replace(".", "").replace(",", ".")))
     
-    preco_convertido = int(float(preco.replace("R$", " ").replace(".", " ").replace(",", " ")))
-    
-    produto =  {"nome": nome, "preco": preco_convertido}
-    
+    produto = {"nome": nome, "preco": preco_convertido}
     produtos.append(produto)
 
 def mercado_livre():
@@ -126,6 +125,18 @@ def pichau():
         centro_de_tratamento("Pichau", item_preco_pichau)
         
     
+def mostrar_resultados():
+    if not produtos:
+        print("\nNenhum produto encontrado.")
+        return
+        
+    # Ordena a lista de produtos pelo preço (crescente)
+    produtos_ordenados = sorted(produtos, key=lambda x: x["preco"])
+        
+    print("\n========= RESULTADOS =========")
+    for produto in produtos_ordenados:
+        print(f"{produto['nome']}: R$ {produto['preco']}")
+
 
 def tecnologia():
     kabum()
@@ -133,10 +144,13 @@ def tecnologia():
     ali_express()
     mamazon()
     mercado_livre()
+    mostrar_resultados()
+    
 def geral():
     mamazon()
     ali_express()
     mercado_livre()
+    mostrar_resultados()
     
     
     
@@ -158,8 +172,8 @@ else:
                  """))
 
 if menu == 1:
-    elemento_pesquisado = str(input("Escolha o produto para economizar:"))
+    elemento_pesquisado = input("Escolha o produto para economizar:")
     geral()
 else:
-    elemento_pesquisado = str(input("Escolha o produto para economizar:"))
+    elemento_pesquisado = input("Escolha o produto para economizar:")
     tecnologia()
